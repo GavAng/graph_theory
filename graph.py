@@ -1,56 +1,55 @@
-import turtle
+from draw_behaviour import DrawBehaviour, TurtleDraw
+from numpy import array_equal, ndarray, sum as numpy_sum, transpose, zeros
+from typing import Type
 
 
 class Graph:
-    def __init__(self, n_vertices, edges={}):
-        self.n_vertices = n_vertices
-        self.edges = edges
+    """
+    An undirected simple graph data structure. Vertices will be integers starting at 0.
+    """
 
-    def draw(self, *, labeled=False, angle=0, radius=200):
-        wn = turtle.Screen()
-        wn.tracer(0)
+    def __init__(self, *, adjacency_matrix: ndarray, draw_behaviour: Type[DrawBehaviour] = TurtleDraw):
+        n_dimensions, shape = adjacency_matrix.ndim, adjacency_matrix.shape
+        if n_dimensions != 2 or shape != (n_vertices := shape[0], n_vertices):
+            raise ValueError("adjacency matrix must be a square matrix")
+        if not array_equal(transpose(adjacency_matrix), adjacency_matrix):
+            raise ValueError("Undirected graphs must have a symmetric adjacency matrix.")
+        self.adjacency_matrix = adjacency_matrix
+        self.draw_behaviour = draw_behaviour(self)
 
-        vertex_positions = self.draw_vertices(
-            labeled=labeled, angle=angle, radius=radius
-        )
-        self.draw_edges(vertex_positions)
+    def __repr__(self):
+        return str(self.adjacency_matrix)
 
-        wn.update()
-        wn.mainloop()
+    @staticmethod
+    def by_n_vertices(n_vertices: int):
+        """
+        Creates a graph with a given number of vertices.
+        """
+        return Graph(adjacency_matrix=zeros(shape=(n_vertices, n_vertices)))
 
-    def draw_vertices(self, *, labeled=False, angle=0, radius=200):
-        import draw_tools
+    def get_n_vertices(self):
+        return self.adjacency_matrix.shape[0]
 
-        vertex_positions = {}
+    def get_n_edges(self):
+        return numpy_sum(self.adjacency_matrix) // 2
 
-        t = turtle.Turtle(visible=False)
+    def add_vertex(self):
+        n_vertices = self.get_n_vertices()
+        new_adjacency_matrix = zeros(shape=(n_vertices + 1, n_vertices + 1))
+        new_adjacency_matrix[:-1, :-1] = self.adjacency_matrix
+        self.adjacency_matrix = new_adjacency_matrix
 
-        exterior_angle = 360 / self.n_vertices
-        font_size = int(100 / self.n_vertices**0.5)
+    def add_edge(self, edge: tuple[int, int]):
+        v1, v2 = edge[0], edge[1]
+        if v1 == v2:
+            raise ValueError("Simple graphs cannot contain an edge between the same vertex.")
+        n_vertices = self.get_n_vertices()
+        if min(v1, v1) <= -1 or n_vertices <= max(v1, v2):
+            raise ValueError(f"Vertices in edge must be in range(0, {n_vertices}).")
+        if self.adjacency_matrix[v1][v2]:
+            raise ValueError(f"Edge {edge} already exists.")
+        self.adjacency_matrix[v1][v2] = 1
+        self.adjacency_matrix[v2][v1] = 1
 
-        t.up()
-        t.left(90 - angle)
-        for v_i in range(1, self.n_vertices + 1):
-            t.forward(radius)
-
-            vertex_positions[v_i] = t.pos()
-
-            if labeled:
-                t.write(v_i, align="center", font=("Arial", font_size, "normal"))
-            draw_tools.draw_point(t.pos(), radius=10)
-
-            t.goto(0, 0)
-            t.right(exterior_angle)
-
-        return vertex_positions
-
-    def draw_edges(self, vertex_positions):
-        t = turtle.Turtle(visible=False)
-
-        for edge in self.edges:
-            v1 = edge.get_endpoint()
-            v2 = edge.get_adjacent(v1)
-            t.up()
-            t.goto(vertex_positions[v1])
-            t.down()
-            t.goto(vertex_positions[v2])
+    def draw(self):
+        self.draw_behaviour.draw()
