@@ -1,20 +1,20 @@
 from abc import ABC, abstractmethod
+from draw_tools import draw_point
+from graph_adt import GraphAdt
 from turtle import Turtle, Screen
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from graph import Graph
-from draw_tools import draw_point
+    from integer_graph import IntegerGraph
 
 
 class DrawBehaviour(ABC):
 
-    def __init__(self, graph: "Graph"):
+    def __init__(self, graph: GraphAdt):
         self._graph = graph
 
     @abstractmethod
-    def draw(self):
-        pass
+    def draw(self): ...
 
 
 class TurtleDraw(DrawBehaviour):

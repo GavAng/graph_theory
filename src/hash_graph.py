@@ -1,10 +1,10 @@
 from draw_behaviour import DrawBehaviour, TurtleDraw
-from graph_ADT import GraphADT
+from graph_adt import GraphAdt
 from numpy import ndarray, sum as numpy_sum, zeros
 from typing import Type, Hashable
 
 
-class HashGraph(GraphADT):
+class HashGraph(GraphAdt, has_mutable_vertices=True, has_mutable_edges=True):
     """
     An undirected simple graph data structure. Vertices can be any (hashable) type.
     """

@@ -1,11 +1,11 @@
 from draw_behaviour import DrawBehaviour, TurtleDraw
-from graph_ADT import GraphADT
+from graph_adt import GraphAdt
 import numpy as np
 from numpy import int8, ndarray, zeros
 from typing import Type
 
 
-class Graph(GraphADT):
+class IntegerGraph(GraphAdt, has_mutable_vertices=True, has_mutable_edges=True):
     """
     An undirected simple graph data structure. Vertices will be integers starting at 0.
     """
@@ -22,12 +22,9 @@ class Graph(GraphADT):
     def __repr__(self):
         return str(self.adjacency_matrix)
 
-    @staticmethod
-    def by_n_vertices(n_vertices: int):
-        """
-        Creates a graph with a given number of vertices.
-        """
-        return Graph(adjacency_matrix=zeros(shape=(n_vertices, n_vertices), dtype=int8))
+    @classmethod
+    def by_n_vertices(cls, n_vertices: int):
+        return cls(adjacency_matrix=zeros(shape=(n_vertices, n_vertices), dtype=int8))
 
     @property
     def n_vertices(self):

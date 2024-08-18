@@ -1,6 +1,6 @@
-from graph import Graph
+from integer_graph import IntegerGraph
 
-g = Graph.by_n_vertices(5)
+g = IntegerGraph.by_n_vertices(5)
 g.add_edge(0, 1)
 g.add_edge(0, 4)
 g.add_edge(1, 3)
