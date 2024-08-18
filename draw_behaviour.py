@@ -1,11 +1,15 @@
 from abc import ABC, abstractmethod
 from turtle import Turtle, Screen
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from graph import Graph
 from draw_tools import draw_point
 
 
 class DrawBehaviour(ABC):
 
-    def __init__(self, graph):
+    def __init__(self, graph: "Graph"):
         self._graph = graph
 
     @abstractmethod
@@ -26,7 +30,7 @@ class TurtleDraw(DrawBehaviour):
         window.mainloop()
 
     def draw_vertices(self, *, labelled=False, angle=0, radius=200):
-        n_vertices = self._graph.get_n_vertices()
+        n_vertices = self._graph.n_vertices
         vertex_positions = {}
 
         t = Turtle(visible=False)
