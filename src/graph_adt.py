@@ -1,38 +1,35 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 
-class GraphAdtMetaclass(ABCMeta):
-    def __new__(cls, name, bases, attributes, *, has_mutable_vertices: bool, has_mutable_edges: bool):
+class GraphAdt(ABC):
 
+    @property
+    @abstractmethod
+    def n_vertices(self) -> int: ...
+
+    @property
+    @abstractmethod
+    def n_edges(self) -> int: ...
+
+    def __init_subclass__(cls, *, has_mutable_vertices: bool = False, has_mutable_edges: bool = False) -> None:
         if has_mutable_vertices:
 
             @abstractmethod
-            def add_vertex(self): ...
+            def add_vertex(self) -> None: ...
 
             @abstractmethod
-            def remove_vertex(self): ...
+            def remove_vertex(self) -> None: ...
 
-            attributes |= {"add_vertex": add_vertex, "remove_vertex": remove_vertex}
+            setattr(cls, add_vertex.__name__, add_vertex)
+            setattr(cls, remove_vertex.__name__, remove_vertex)
 
         if has_mutable_edges:
 
             @abstractmethod
-            def add_edge(self): ...
+            def add_edge(self) -> None: ...
 
             @abstractmethod
-            def remove_edge(self): ...
+            def remove_edge(self) -> None: ...
 
-            attributes |= {"add_edge": add_edge, "remove_edge": remove_edge}
-
-        return super().__new__(cls, name, bases, attributes)
-
-
-class GraphAdt(metaclass=GraphAdtMetaclass, has_mutable_vertices=True, has_mutable_edges=True):
-
-    @property
-    @abstractmethod
-    def n_vertices(self): ...
-
-    @property
-    @abstractmethod
-    def n_edges(self): ...
+            setattr(cls, add_edge.__name__, add_edge)
+            setattr(cls, remove_edge.__name__, remove_edge)
