@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
 from draw_tools import draw_point
-from graph_adt import GraphAdt
+from graphs.graph_adt import GraphAdt
 from turtle import Turtle, Screen
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from integer_graph import IntegerGraph
 
 
 class DrawBehaviour(ABC):

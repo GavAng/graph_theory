@@ -1,5 +1,5 @@
 from draw_behaviour import DrawBehaviour, TurtleDraw
-from graph_adt import GraphAdt
+from graphs.graph_adt import GraphAdt
 from numpy import ndarray, sum as numpy_sum, zeros
 from typing import Type, Hashable
 
@@ -28,10 +28,10 @@ class HashGraph(GraphAdt, has_mutable_vertices=True, has_mutable_edges=True):
     def get_n_edges(self):
         return numpy_sum(self.adjacency_matrix) // 2
 
-    def add_vertex(vertex_label: Hashable):
+    def add_vertex(self, vertex: Hashable):
         pass
 
-    def add_edge(edge: tuple[Hashable, Hashable]):
+    def add_edge(self, edge: tuple[Hashable, Hashable]):
         pass
 
     def draw(self):
