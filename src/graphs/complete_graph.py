@@ -1,7 +1,7 @@
-from graphs.graph_adt import GraphAdt
+from graphs.graph_adt import BaseGraphAdt, MutableVerticesGraphAdt
 
 
-class CompleteGraph(GraphAdt, has_mutable_vertices=True): ...
+class CompleteGraph(BaseGraphAdt, MutableVerticesGraphAdt): ...
 
 
 K = CompleteGraph

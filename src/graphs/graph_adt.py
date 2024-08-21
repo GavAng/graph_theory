@@ -1,4 +1,26 @@
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
+
+from utils.typings import Vertex
+
+
+class BaseGraphAdt(ABC):
+    @property
+    @abstractmethod
+    def n_vertices(self) -> int: ...
+
+    @property
+    @abstractmethod
+    def n_edges(self) -> int: ...
+
+    @property
+    @abstractmethod
+    def vertices(self) -> set[Vertex]: ...
+
+    @property
+    @abstractmethod
+    def edges(self) -> set[tuple[Vertex, Vertex]]: ...
+
+    # perhaps edge could be Collection instead of general tuple
 
 
 class MutableVerticesGraphAdt(ABC):
@@ -15,27 +37,3 @@ class MutableEdgesGraphAdt(ABC):
 
     @abstractmethod
     def remove_edge(self) -> None: ...
-
-
-class GraphAdtMetaclass(ABCMeta):
-    def __new__(cls, name, bases, attributes, *, has_mutable_vertices: bool = False, has_mutable_edges: bool = False):
-
-        bases = list(bases)
-
-        if has_mutable_vertices:
-            bases.append(MutableVerticesGraphAdt)
-
-        if has_mutable_edges:
-            bases.append(MutableEdgesGraphAdt)
-
-        return super().__new__(cls, name, tuple(bases), attributes)
-
-
-class GraphAdt(metaclass=GraphAdtMetaclass, has_mutable_edges=True):
-    @property
-    @abstractmethod
-    def n_vertices(self) -> int: ...
-
-    @property
-    @abstractmethod
-    def n_edges(self) -> int: ...
