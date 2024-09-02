@@ -1,12 +1,13 @@
 import numpy as np
 from numpy import int8, zeros
+from typing import Self
 
 from graphs.graph_adt import BaseGraphAdt, MutableEdgesGraphAdt, MutableVerticesGraphAdt
 
 
 class IntegerGraph(BaseGraphAdt, MutableVerticesGraphAdt, MutableEdgesGraphAdt):
     """
-    An undirected simple graph data structure. Vertices will be integers starting at 0.
+    An undirected simple graph data structure. Vertices will be integers starting at 0. Not as simple as HashGraph[int].
     """
 
     def __init__(self, *, adjacency_matrix: np.ndarray) -> None:
@@ -18,13 +19,13 @@ class IntegerGraph(BaseGraphAdt, MutableVerticesGraphAdt, MutableEdgesGraphAdt):
         self._adjacency_matrix = adjacency_matrix
 
     def __repr__(self) -> str:
-        # return f"{' '.join(map(str, range(self.n_vertices)))}\n{'\n'.join(
-        #     f'{str(i)} {" ".join(map(str, self.adjacency_matrix[i, :i]))}' for i in range(self.n_vertices)
-        # )}"
-        return str(self._adjacency_matrix)
+        return f"  {" ".join(map(str, range(self.n_vertices)))}\n{
+            "\n".join(f"{str(i)} {" ".join(map(str, self._adjacency_matrix[i, :i]))}" 
+                      for i in range(self.n_vertices)
+                      )}"
 
     @classmethod
-    def by_n_vertices(cls, n_vertices: int) -> "IntegerGraph":
+    def by_n_vertices(cls, n_vertices: int) -> Self:
         return cls(adjacency_matrix=zeros(shape=(n_vertices, n_vertices), dtype=int8))
 
     @property
@@ -67,7 +68,7 @@ class IntegerGraph(BaseGraphAdt, MutableVerticesGraphAdt, MutableEdgesGraphAdt):
         if v_1 == v_2:
             raise ValueError("Simple graphs cannot contain an edge between the same vertex.")
         if min(v_1, v_2) <= -1 or self.n_vertices <= max(v_1, v_2):
-            raise ValueError(f"Vertices in edge must be in range(0, {self.n_vertices}).")
+            raise ValueError(f"Vertices in graph must be in range(0, {self.n_vertices}).")
         if self._adjacency_matrix[v_1][v_2]:
             raise ValueError(f"Edge ({v_1}, {v_2}) already exists.")
         self._adjacency_matrix[v_1][v_2] = 1
@@ -75,7 +76,7 @@ class IntegerGraph(BaseGraphAdt, MutableVerticesGraphAdt, MutableEdgesGraphAdt):
 
     def remove_edge(self, v_1: int, v_2: int) -> None:
         if min(v_1, v_2) <= -1 or self.n_vertices <= max(v_1, v_2):
-            raise ValueError(f"Vertices in edge must be in range(0, {self.n_vertices}).")
+            raise ValueError(f"Vertices in graph must be in range(0, {self.n_vertices}).")
         if not self._adjacency_matrix[v_1][v_2]:
             raise ValueError(f"Edge ({v_1}, {v_2}) does not exist.")
         self._adjacency_matrix[v_1][v_2] = 0
