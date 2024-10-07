@@ -1,8 +1,7 @@
-from collections import defaultdict
 from typing import Generic, TypeVar
 
 from graphs.graph_adt import BaseGraphAdt, MutableEdgesGraphAdt, MutableVerticesGraphAdt
-from utils.typings import Vertex, Edge
+from utils.typings import Edge, Vertex
 
 VertexT = TypeVar("VertexT", bound=Vertex)  # change for square brackets once Pylance updates
 EdgeT = Edge[VertexT]

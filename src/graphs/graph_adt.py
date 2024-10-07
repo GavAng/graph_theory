@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Self
 
-from utils.typings import Vertex, Edge
+from utils.typings import Edge, Vertex
 
 
 class BaseGraphAdt(ABC):
@@ -20,8 +20,6 @@ class BaseGraphAdt(ABC):
     @property
     @abstractmethod
     def edges(self) -> set[Edge]: ...
-
-    # perhaps edge could be Collection instead of general tuple
 
     # @abstractmethod
     # def __or__(self, other: Self) -> Self: ...

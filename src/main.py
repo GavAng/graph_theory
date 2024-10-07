@@ -1,6 +1,6 @@
-from draw_behaviour import TurtleDraw
+from draw_tools import TurtleDraw
 from graphs.hash_graph import HashGraph
-from graphs.integer_graph import IntegerGraph
+from pprint import pprint
 
 V = {0, 1.1, 2, 3}
 E = {(0, 1.1), (1.1, 3)}
@@ -10,6 +10,7 @@ G.add_edge(-5.5, 3)
 
 print(G.vertices)
 print(G.edges)
+pprint(G._adjacency_list)
 
 t = TurtleDraw(G)
 t.draw()

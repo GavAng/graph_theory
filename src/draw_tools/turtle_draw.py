@@ -1,17 +1,7 @@
-from abc import ABC, abstractmethod
 import turtle
-
+from draw_tools.base_draw import DrawBehaviour
 from graphs.graph_adt import BaseGraphAdt
 from utils.typings import Point2d, Vertex
-
-
-class DrawBehaviour(ABC):
-    def __init__(self, graph: BaseGraphAdt, *, labelled: bool = False) -> None:
-        self._graph = graph
-        self._labelled = labelled
-
-    @abstractmethod
-    def draw(cls, graph: BaseGraphAdt) -> None: ...
 
 
 class TurtleDraw(DrawBehaviour):
